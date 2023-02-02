@@ -1,10 +1,12 @@
 import 'package:flutter_square/data/model_service_provider.dart';
+import 'entity/model_entity.dart';
 
 class ModelService {
   final modelServiceProvider = ModelServiceProvider();
+  ModelEntity get modelGet => modelServiceProvider.modelEntity;
 
-  void initService() async {
-    await modelServiceProvider.loadData();
+  void getData() async {
+    modelServiceProvider.loadData();
   }
 
   void setLeftChange() {

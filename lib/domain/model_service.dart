@@ -5,8 +5,8 @@ class ModelService {
   final modelServiceProvider = ModelServiceProvider();
   ModelEntity get modelGet => modelServiceProvider.modelEntity;
 
-  void getData() async {
-    modelServiceProvider.loadData();
+  Future<void> getData() async {
+    await modelServiceProvider.loadData();
   }
 
   void setLeftChange() {

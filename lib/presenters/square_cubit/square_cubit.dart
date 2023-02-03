@@ -1,35 +1,47 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import 'package:flutter_square/domain/entity/model_entity.dart';
 import 'package:flutter_square/domain/model_service.dart';
 
-class ModelState {
-  ModelEntity data;
-  ModelState({
-    required this.data,
-  });
+abstract class ModelState {
+  late ModelEntity data;
 }
 
-class ModelCubit extends Cubit<ModelState> {
+class IinitModelState extends ModelState {
   final _service = ModelService();
-  ModelCubit() : super(ModelState(data: ModelEntity(alight: false, x: -1))) {
+  IinitModelState() {
     _initData();
   }
 
   Future<void> _initData() async {
     await _service.getData();
-    ModelState newState = ModelState(data: _service.modelGet);
-    emit(newState);
+    data = _service.modelGet;
   }
+}
+
+class LeftModelState extends ModelState {
+  LeftModelState() {
+    final service = ModelService();
+    service.setLeftChange();
+    data = service.modelGet;
+  }
+}
+
+class RightModelState extends ModelState {
+  RightModelState() {
+    final service = ModelService();
+    service.setRightChange();
+    data = service.modelGet;
+  }
+}
+
+class ModelCubit extends Cubit<ModelState> {
+  ModelCubit(super.initialState);
 
   Future<void> toLeft() async {
-    _service.setLeftChange();
-    emit(ModelState(data: _service.modelGet));
+    emit(LeftModelState());
   }
 
   Future<void> toRight() async {
-    _service.setRightChange();
-    emit(ModelState(data: _service.modelGet));
+    emit(RightModelState());
   }
 }

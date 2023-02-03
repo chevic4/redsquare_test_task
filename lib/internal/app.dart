@@ -9,10 +9,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: BlocProvider(
-        create: (_) => ModelCubit(),
+        create: (_) => ModelCubit(RightModelState()),
         child: const SquareScreen(),
       ),
     );
   }
 }
-

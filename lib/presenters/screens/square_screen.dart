@@ -8,36 +8,35 @@ class SquareScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cubit = context.read<ModelCubit>();
     return Scaffold(
       body: SafeArea(
-        child: Center(child:
-            BlocBuilder<ModelCubit, ModelState>(builder: (context, state) {
-          return Column(
+        child: Center(
+            child: StreamBuilder<ModelState>(
+          initialData: cubit.state,
+          stream: cubit.stream,
+          builder: (context, snapshot) => Column(
             children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   ElevatedButton(
-                    onPressed: () => context.read<ModelCubit>().toLeft(),
-                    //   model.modelState.data.alight ? model.onPressLeft : null,
+                    onPressed: cubit.toLeft,
                     child: const Text('left'),
                   ),
                   ElevatedButton(
-                    onPressed: () {
-                      context.read<ModelCubit>().toRight();
-                    },
+                    onPressed: cubit.toRight,
                     child: const Text('Right'),
                   ),
                 ],
               ),
               AnimatedContainer(
-                  alignment:
-                      Alignment(context.read<ModelCubit>().state.data.x, 1),
+                  alignment: Alignment(cubit.state.data.x, 1),
                   duration: const Duration(seconds: 1),
                   child: const Square()),
             ],
-          );
-        })),
+          ),
+        )),
       ),
     );
   }
